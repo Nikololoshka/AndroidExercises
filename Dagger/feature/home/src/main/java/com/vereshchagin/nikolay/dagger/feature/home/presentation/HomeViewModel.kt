@@ -3,12 +3,13 @@ package com.vereshchagin.nikolay.dagger.feature.home.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.vereshchagin.nikolay.dagger.core.di.ConsoleAnalytics
+import com.vereshchagin.nikolay.dagger.core.domain.repository.AnalyticsTracker
 import com.vereshchagin.nikolay.dagger.feature.home.domain.interceptor.HomeInterceptor
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -18,7 +19,8 @@ import kotlinx.coroutines.launch
  * Factory на самом деле не нужна, но пусть будет
  */
 class HomeViewModel @AssistedInject constructor(
-    private val interceptor: HomeInterceptor
+    private val interceptor: HomeInterceptor,
+    @ConsoleAnalytics private val tracker: AnalyticsTracker
 ) : ViewModel() {
 
     private val _state: MutableStateFlow<String> = MutableStateFlow("Nothing")
@@ -26,6 +28,7 @@ class HomeViewModel @AssistedInject constructor(
 
     fun fetchData() {
         _state.value = "Loading"
+        tracker.track("Starting HomeViewModel.fetchData()")
 
         viewModelScope.launch {
             val firstRequest = async { interceptor.getFirstData() }

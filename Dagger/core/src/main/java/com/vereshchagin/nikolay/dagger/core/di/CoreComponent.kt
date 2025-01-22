@@ -8,6 +8,7 @@ import javax.inject.Singleton
 @Component(
     modules = [
         CoreNetworkModule::class,
+        CoreAnalyticsModule::class,
         CoreModule::class
     ]
 )
