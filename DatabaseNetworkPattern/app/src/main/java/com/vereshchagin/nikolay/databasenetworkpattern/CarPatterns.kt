@@ -31,6 +31,7 @@ class CarBuilder {
 
 interface CarFactory {
     fun createCar(): Car
+    fun createSuperCar(): Car
 }
 
 class MercedesFactory: CarFactory {
@@ -42,6 +43,15 @@ class MercedesFactory: CarFactory {
             color = "black"
         )
     }
+
+    override fun createSuperCar(): Car {
+        return Car(
+            model = "Mercedes",
+            year = 2022,
+            engine = "V12",
+            color = "black"
+        )
+    }
 }
 
 class FerrariFactory: CarFactory {
@@ -49,6 +59,15 @@ class FerrariFactory: CarFactory {
         return Car(
             model = "Ferrari",
             year = 2010,
+            engine = "V12",
+            color = "red"
+        )
+    }
+
+    override fun createSuperCar(): Car {
+        return Car(
+            model = "Ferrari",
+            year = 2020,
             engine = "V12",
             color = "red"
         )
@@ -68,5 +87,6 @@ fun main(args: Array<String>) {
     val factories: List<CarFactory> = listOf(MercedesFactory(), FerrariFactory())
     factories.forEach { factory ->
         println(factory.createCar())
+        println(factory.createSuperCar())
     }
 }
